@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Motion Portfolio — 21 Years of Motion. Infinite Stories.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+
+<style>
+  /* ─── TOKENS ─────────────────────────────────────────── */
+  :root {
+    --bg:        #0d0d0d;
+    --surface:   #121212;
+    --glass:     rgba(255,255,255,0.04);
+    --glass-b:   rgba(255,255,255,0.08);
+    --accent:    #00aaff;
+    --accent2:   #0066cc;
+    --white:     #f0f0ee;
+    --muted:     #6a6a6a;
+    --border:    rgba(255,255,255,0.08);
+    --border-h:  rgba(0,170,255,0.4);
+    --font-disp: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  /* ─── RESET ──────────────────────────────────────────── */
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ──────────────────────────────────── */
+  #cursor {
+    position: fixed; top:0; left:0; z-index:9999;
+    width:10px; height:10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; top:0; left:0; z-index:9998;
+    width:36px; height:36px;
+    border: 1px solid rgba(0,170,255,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.25,1,0.5,1), opacity 0.2s;
+  }
+  body:hover #cursor { transform: translate(-50%,-50%); }
+  body:hover #cursor-ring { transform: translate(-50%,-50%); }
+
+  /* ─── GRAIN OVERLAY ─────────────────────────────────── */
+  body::before {
+    content:'';
+    position: fixed; inset:0; z-index:1000;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    opacity: 0.6;
+  }
+
+  /* ─── NAV ────────────────────────────────────────────── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:500;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 1.6rem 4rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s, background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(13,13,13,0.8);
+    backdrop-filter: blur(20px);
+    border-color: var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-disp);
+    font-size: 1.5rem;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1.2rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: #000; }
+
+  /* ─── HERO ───────────────────────────────────────────── */
+  #hero {
+    position: relative;
+    width:100vw; height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+
+  .hero-video-wrap {
+    position:absolute; inset:0;
+    z-index:0;
+  }
+  /* ── VIDEO PLACEHOLDER — replace <div> with <video> ── */
+  .hero-video-placeholder {
+    width:100%; height:100%;
+    background: linear-gradient(135deg, #0a0a0a 0%, #111827 40%, #0d1a2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:1rem;
+  }
+  .hero-video-placeholder .play-icon {
+    width:80px; height:80px;
+    border: 1px solid rgba(0,170,255,0.3);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    animation: pulse-ring 2.5s ease infinite;
+  }
+  .hero-video-placeholder .play-icon svg { width:28px; height:28px; fill: var(--accent); margin-left:4px; }
+  .hero-video-placeholder p {
+    font-family: var(--font-mono);
+    font-size:0.68rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color: rgba(0,170,255,0.5);
+  }
+
+  /* Real video — uncomment when ready:
+  .hero-video-wrap video {
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  */
+
+  .hero-overlay {
+    position:absolute; inset:0;
+    background: linear-gradient(to bottom, rgba(13,13,13,0.3) 0%, rgba(13,13,13,0.6) 70%, var(--bg) 100%);
+    z-index:1;
+  }
+
+  .hero-content {
+    position:relative; z-index:2;
+    text-align:center;
+    padding:0 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color: var(--accent);
+    margin-bottom:1.5rem;
+    opacity:0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-disp);
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height:0.92;
+    letter-spacing:0.03em;
+    color: var(--white);
+    opacity:0;
+    animation: fadeUp 1s 0.55s forwards;
+  }
+  .hero-title .accent-line { color: var(--accent); display:block; }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size:1.05rem;
+    font-weight:300;
+    color: var(--muted);
+    letter-spacing:0.04em;
+    max-width:480px;
+    margin-left:auto; margin-right:auto;
+    opacity:0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-actions {
+    margin-top:2.8rem;
+    display:flex; gap:1.2rem; justify-content:center;
+    opacity:0;
+    animation: fadeUp 1s 1.05s forwards;
+  }
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:#000; background: var(--accent);
+    padding:0.85rem 2rem;
+    text-decoration:none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,170,255,0.3); }
+  .btn-ghost {
+    font-family: var(--font-mono);
+    font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase;
+    color: var(--white); border:1px solid var(--border);
+    padding:0.85rem 2rem;
+    text-decoration:none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--white); }
+
+  .hero-scroll-hint {
+    position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+    z-index:2; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    opacity:0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .hero-scroll-hint span {
+    font-family: var(--font-mono); font-size:0.6rem; letter-spacing:0.25em;
+    text-transform:uppercase; color: var(--muted);
+  }
+  .scroll-line {
+    width:1px; height:48px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scroll-pulse 2s ease infinite;
+  }
+
+  /* ─── SECTION WRAPPER ────────────────────────────────── */
+  section { padding: 8rem 4rem; max-width:1400px; margin:0 auto; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+    color: var(--accent); margin-bottom:1rem;
+    display:flex; align-items:center; gap:1rem;
+  }
+  .section-label::before {
+    content:''; display:block;
+    width:32px; height:1px; background: var(--accent);
+  }
+  .section-title {
+    font-family: var(--font-disp);
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height:1; letter-spacing:0.02em;
+    color: var(--white);
+    margin-bottom:4rem;
+  }
+
+  /* ─── TOOLSTACK ──────────────────────────────────────── */
+  #tools { border-top:1px solid var(--border); padding-top:5rem; }
+  .tools-intro {
+    display:grid; grid-template-columns:1fr 1fr; gap:4rem;
+    align-items:end; margin-bottom:4rem;
+  }
+  .tools-desc {
+    font-size:1rem; line-height:1.75; color: var(--muted); max-width:420px;
+  }
+
+  .tools-grid {
+    display:flex; gap:0; 
+    border:1px solid var(--border);
+  }
+  .tool-item {
+    flex:1;
+    padding:2.5rem 2rem;
+    border-right:1px solid var(--border);
+    display:flex; flex-direction:column; align-items:center; gap:1rem;
+    transition: background 0.3s;
+    position:relative; overflow:hidden;
+  }
+  .tool-item:last-child { border-right:none; }
+  .tool-item::after {
+    content:'';
+    position:absolute; bottom:0; left:0; right:0;
+    height:1px; background: var(--accent);
+    transform:scaleX(0); transform-origin:left;
+    transition: transform 0.4s ease;
+  }
+  .tool-item:hover { background: var(--glass); }
+  .tool-item:hover::after { transform:scaleX(1); }
+
+  .tool-icon {
+    width:52px; height:52px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.8rem;
+  }
+  .tool-name {
+    font-family: var(--font-mono);
+    font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+    color: var(--muted);
+    text-align:center;
+  }
+  .tool-name strong { display:block; color:var(--white); font-size:0.85rem; margin-bottom:0.2rem; font-weight:400; }
+
+  /* SVG-based tool icons */
+  .icon-ae { background: linear-gradient(135deg,#00005b,#0b006b); border-radius:6px; padding:8px; }
+  .icon-ai { background: linear-gradient(135deg,#330000,#4a0000); border-radius:6px; padding:8px; }
+  .icon-pr { background: linear-gradient(135deg,#0a001e,#1a0033); border-radius:6px; padding:8px; }
+  .icon-fp { background: linear-gradient(135deg,#001a33,#00264d); border-radius:6px; padding:8px; }
+  .icon-gk { background: linear-gradient(135deg,#001122,#002244); border-radius:6px; padding:8px; }
+
+  /* ─── MOTION GRID ────────────────────────────────────── */
+  #work { padding-top:8rem; }
+
+  .masonry-grid {
+    columns:3; column-gap:1.5rem;
+  }
+  .masonry-item {
+    break-inside:avoid;
+    margin-bottom:1.5rem;
+    position:relative;
+    border:1px solid var(--border);
+    overflow:hidden;
+    cursor:pointer;
+    background: var(--glass);
+    transition: border-color 0.3s, transform 0.4s cubic-bezier(0.2,1,0.3,1);
+  }
+  .masonry-item:hover {
+    border-color: var(--border-h);
+    transform:translateY(-6px);
+    box-shadow:0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,170,255,0.15);
+  }
+
+  /* Glass card overlay on hover */
+  .masonry-item::before {
+    content:'';
+    position:absolute; inset:0; z-index:2;
+    background: linear-gradient(135deg, rgba(0,170,255,0.06), rgba(0,0,0,0));
+    opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .masonry-item:hover::before { opacity:1; }
+
+  /* IMAGE PLACEHOLDER — replace with <img> or <video> */
+  .proj-thumb {
+    width:100%;
+    background: linear-gradient(135deg, #0f1318 0%, #0d1a2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .proj-thumb.h1 { height:320px; }
+  .proj-thumb.h2 { height:200px; }
+  .proj-thumb.h3 { height:260px; }
+  .proj-thumb.h4 { height:180px; }
+  .proj-thumb.h5 { height:300px; }
+  .proj-thumb.h6 { height:230px; }
+  .proj-thumb.h7 { height:280px; }
+  .proj-thumb.h8 { height:210px; }
+  .proj-thumb.h9 { height:350px; }
+
+  .thumb-placeholder-text {
+    font-family: var(--font-mono);
+    font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+    color: rgba(255,255,255,0.12);
+    text-align:center;
+  }
+  .thumb-num {
+    position:absolute; top:1rem; left:1rem;
+    font-family:var(--font-mono); font-size:0.6rem;
+    color:rgba(0,170,255,0.3); letter-spacing:0.15em;
+  }
+
+  .proj-info {
+    padding:1.2rem 1.4rem 1.4rem;
+    backdrop-filter:blur(4px);
+  }
+  .proj-tag {
+    font-family:var(--font-mono); font-size:0.58rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color: var(--accent); margin-bottom:0.4rem;
+  }
+  .proj-title {
+    font-family: var(--font-body); font-size:0.92rem;
+    font-weight:400; color:var(--white); margin-bottom:0.2rem;
+  }
+  .proj-year {
+    font-family:var(--font-mono); font-size:0.6rem;
+    color:var(--muted); letter-spacing:0.1em;
+  }
+
+  /* ─── SHOWREEL CTA ───────────────────────────────────── */
+  #showreel {
+    padding:6rem 4rem;
+    max-width:100%; margin:0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    background: var(--surface);
+  }
+  .showreel-bg {
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse at center, rgba(0,100,200,0.08) 0%, transparent 70%);
+  }
+  .showreel-inner { position:relative; text-align:center; z-index:1; }
+  .showreel-label {
+    font-family:var(--font-mono); font-size:0.65rem;
+    letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:1.5rem;
+  }
+  .showreel-title {
+    font-family:var(--font-disp);
+    font-size: clamp(3rem, 6vw, 6.5rem);
+    line-height:0.95; color:var(--white);
+    margin-bottom:2.5rem;
+  }
+
+  /* Video embed placeholder */
+  .video-frame {
+    width:min(860px, 90vw); margin:0 auto 2.5rem;
+    aspect-ratio:16/9;
+    border:1px solid var(--border);
+    background: #080c10;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:1.2rem;
+    position:relative; overflow:hidden;
+  }
+  /* ── REPLACE THIS DIV WITH:
+     <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775541739/Screen_Recording_20260319_234308_Chrome_1_ktwydb.mp4" controls poster="showreel-poster.jpg"></video>
+     OR embed an iframe from Vimeo/YouTube ── */
+  .video-frame-inner {
+    text-align:center;
+  }
+  .video-play-btn {
+    width:72px; height:72px;
+    border:1px solid rgba(0,170,255,0.35);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor:pointer;
+    animation: pulse-ring 3s ease infinite;
+  }
+  .video-play-btn:hover { border-color:var(--accent); transform:scale(1.08); }
+  .video-play-btn svg { fill:var(--accent); width:24px; height:24px; margin-left:4px; }
+  .video-frame p {
+    font-family:var(--font-mono); font-size:0.62rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:rgba(0,170,255,0.4);
+  }
+
+  /* ─── TIMELINE ───────────────────────────────────────── */
+  #timeline { padding-top:8rem; }
+
+  .timeline-wrap {
+    display:grid; grid-template-columns:1fr 80px 1fr;
+    gap:0; position:relative;
+  }
+
+  /* center line */
+  .timeline-line {
+    display:flex; flex-direction:column; align-items:center;
+    position:relative;
+  }
+  .tl-spine {
+    width:1px; flex:1;
+    background: linear-gradient(to bottom, transparent, var(--accent) 10%, var(--border) 90%, transparent);
+  }
+
+  .tl-entry {
+    padding:2.5rem 0 2.5rem 0;
+    opacity:0;
+    transform:translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tl-entry.visible { opacity:1; transform:translateY(0); }
+
+  .tl-left { text-align:right; padding-right:3rem; }
+  .tl-right { text-align:left; padding-left:3rem; }
+
+  .tl-dot {
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--bg);
+    border:1px solid var(--accent);
+    margin:3rem auto 0;
+    position:relative;
+    flex-shrink:0;
+  }
+  .tl-dot::after {
+    content:''; position:absolute;
+    inset:-4px; border-radius:50%;
+    background: rgba(0,170,255,0.12);
+  }
+
+  .tl-year {
+    font-family:var(--font-disp); font-size:3.5rem;
+    line-height:1; color:rgba(255,255,255,0.06);
+    letter-spacing:0.02em;
+  }
+  .tl-role {
+    font-family:var(--font-body); font-size:1rem;
+    font-weight:400; color:var(--white);
+    margin-bottom:0.3rem; margin-top:0.6rem;
+  }
+  .tl-company {
+    font-family:var(--font-mono); font-size:0.65rem;
+    letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:0.6rem;
+  }
+  .tl-desc {
+    font-size:0.875rem; line-height:1.7; color:var(--muted);
+    max-width:280px;
+  }
+  .tl-left .tl-desc { margin-left:auto; }
+
+  /* ─── ABOUT STRIP ────────────────────────────────────── */
+  #about {
+    padding:8rem 4rem;
+    max-width:100%; margin:0;
+    border-top:1px solid var(--border);
+    background: var(--surface);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8rem;
+    align-items:center;
+  }
+  .about-left {}
+  .about-photo {
+    width:100%; aspect-ratio:3/4;
+    background: linear-gradient(135deg,#0f1318,#0d1a2e);
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  /* ── REPLACE WITH <img src="photo.jpg"> ── */
+  .about-photo-text {
+    font-family:var(--font-mono); font-size:0.6rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:rgba(255,255,255,0.1);
+  }
+  .about-photo::after {
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(to top, rgba(18,18,18,0.6), transparent 50%);
+  }
+
+  .about-right {}
+  .about-quote {
+    font-family:var(--font-disp);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    line-height:1.1; color:var(--white);
+    margin-bottom:2rem;
+  }
+  .about-quote em { color:var(--accent); font-style:normal; }
+  .about-bio {
+    font-size:0.95rem; line-height:1.85;
+    color:var(--muted); margin-bottom:2.5rem;
+  }
+  .stats-row {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--border);
+  }
+  .stat {
+    padding:1.5rem 1.2rem;
+    border-right:1px solid var(--border);
+    text-align:center;
+  }
+  .stat:last-child { border-right:none; }
+  .stat-num {
+    font-family:var(--font-disp); font-size:2.8rem;
+    color:var(--white); line-height:1;
+  }
+  .stat-num span { color:var(--accent); }
+  .stat-label {
+    font-family:var(--font-mono); font-size:0.58rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--muted); margin-top:0.4rem;
+  }
+
+  /* ─── CONTACT ────────────────────────────────────────── */
+  #contact {
+    padding:8rem 4rem;
+    text-align:center;
+    border-top:1px solid var(--border);
+    max-width:100%; margin:0;
+  }
+  .contact-title {
+    font-family:var(--font-disp);
+    font-size: clamp(3rem,6vw,6rem);
+    color:var(--white); margin-bottom:1rem;
+  }
+  .contact-sub {
+    font-size:1rem; color:var(--muted);
+    margin-bottom:3rem; max-width:420px; margin-left:auto; margin-right:auto;
+  }
+  .contact-email {
+    font-family:var(--font-disp);
+    font-size: clamp(1.5rem,3vw,2.5rem);
+    color:var(--accent); text-decoration:none;
+    border-bottom:1px solid rgba(0,170,255,0.3);
+    padding-bottom:0.2rem;
+    transition:border-color 0.2s;
+  }
+  .contact-email:hover { border-color:var(--accent); }
+
+  /* ─── FOOTER ─────────────────────────────────────────── */
+  footer {
+    border-top:1px solid var(--border);
+    padding:2rem 4rem;
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:100%;
+  }
+  .footer-copy {
+    font-family:var(--font-mono); font-size:0.6rem;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--muted);
+  }
+  .footer-links { display:flex; gap:2rem; }
+  .footer-links a {
+    font-family:var(--font-mono); font-size:0.6rem;
+    letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none;
+    transition:color 0.2s;
+  }
+  .footer-links a:hover { color:var(--white); }
+
+  /* ─── ANIMATIONS ─────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity:0; } to { opacity:1; }
+  }
+  @keyframes pulse-ring {
+    0%,100% { box-shadow:0 0 0 0 rgba(0,170,255,0); }
+    50%     { box-shadow:0 0 0 12px rgba(0,170,255,0.08); }
+  }
+  @keyframes scroll-pulse {
+    0%,100% { opacity:0.3; transform:scaleY(1); }
+    50%     { opacity:1;   transform:scaleY(1.15); }
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────── */
+  @media (max-width:1024px) {
+    .masonry-grid { columns:2; }
+    .tools-intro { grid-template-columns:1fr; gap:2rem; }
+    #about { grid-template-columns:1fr; gap:4rem; }
+    .timeline-wrap { grid-template-columns:1fr 40px 1fr; }
+  }
+  @media (max-width:768px) {
+    nav { padding:1.2rem 1.5rem; }
+    .nav-links { display:none; }
+    section { padding:5rem 1.5rem; }
+    .masonry-grid { columns:1; }
+    .timeline-wrap {
+      grid-template-columns:40px 1fr;
+    }
+    .tl-left { display:none; }
+    .tl-right { text-align:left; padding-left:2rem; }
+    #about, #contact, footer, #showreel { padding:4rem 1.5rem; }
+    .stats-row { grid-template-columns:1fr; }
+    .stat { border-right:none; border-bottom:1px solid var(--border); }
+    .stat:last-child { border-bottom:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">M<span>.</span>DESIGN</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#showreel">Showreel</a></li>
+    <li><a href="#timeline">Story</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's Talk</a>
+</nav>
+
+<!-- ──────────────────────────────────────────────── HERO -->
+<section id="hero" style="padding:0;max-width:100%;margin:0;">
+  <div class="hero-video-wrap">
+    <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
+      <source src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542318/Screen_Recording_20260319_231856_Photos_kdgwmn.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Senior 2D Motion Designer · Est. 2003</p>
+    <h1 class="hero-title">
+      21 Years of Motion.<br>
+      <span class="accent-line">Infinite Stories.</span>
+    </h1>
+    <p class="hero-sub">Crafting visual narratives that move audiences — frame by frame, frame by frame.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View Work</a>
+      <a href="#showreel" class="btn-ghost">Watch Showreel</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── TOOLSTACK -->
+<section id="tools">
+  <div class="tools-intro">
+    <div>
+      <div class="section-label">Arsenal</div>
+      <h2 class="section-title" style="margin-bottom:0;">The Toolstack</h2>
+    </div>
+    <p class="tools-desc">Two decades forged a precise, powerful workflow—blending industry-standard motion tools with AI-augmented creative pipelines for results that consistently exceed brief.</p>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-item">
+      <div class="tool-icon">
+        <div class="icon-ae">
+          <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" fill="none"/><text x="4" y="26" font-size="18" font-weight="700" fill="#9999FF" font-family="Arial">Ae</text></svg>
+        </div>
+      </div>
+      <div class="tool-name"><strong>After Effects</strong>Motion & VFX</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon">
+        <div class="icon-ai">
+          <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" fill="none"/><text x="4" y="26" font-size="18" font-weight="700" fill="#FF9A00" font-family="Arial">Ai</text></svg>
+        </div>
+      </div>
+      <div class="tool-name"><strong>Illustrator</strong>Vector & Design</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon">
+        <div class="icon-pr">
+          <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" fill="none"/><text x="4" y="26" font-size="18" font-weight="700" fill="#9999FF" font-family="Arial">Pr</text></svg>
+        </div>
+      </div>
+      <div class="tool-name"><strong>Premiere Pro</strong>Edit & Finish</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon">
+        <div class="icon-fp">
+          <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" fill="none"/><text x="3" y="26" font-size="14" font-weight="700" fill="#00aaff" font-family="Arial">Fk</text></svg>
+        </div>
+      </div>
+      <div class="tool-name"><strong>Freepik AI</strong>AI Asset Gen</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon">
+        <div class="icon-gk">
+          <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" fill="none"/><text x="3" y="26" font-size="15" font-weight="700" fill="#00ccff" font-family="Arial">Gk</text></svg>
+        </div>
+      </div>
+      <div class="tool-name"><strong>Grok AI</strong>Concept & Copy</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── WORK GRID -->
+<section id="work">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title">The Motion Grid</h2>
+
+  <div class="masonry-grid">
+
+    <!-- CARD 1 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h1" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">001</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542175/Screen_Recording_20260319_234308_Chrome_2_ykqnwu.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Motion Design · 2024</div>
+        <div class="proj-title">2D Animation — Brand Intro</div>
+        <div class="proj-year">Motion graphics · Full HD</div>
+      </div>
+    </div>
+
+    <!-- CARD 2 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h2" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">002</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775541907/Screen_Recording_20260319_234308_Chrome_1_oeeip2.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Showreel · 2024</div>
+        <div class="proj-title">Signature Reel — 21 Years of Motion</div>
+        <div class="proj-year">Showreel compilation · 4K</div>
+      </div>
+    </div>
+
+    <!-- CARD 3 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h3" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">003</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542266/Screen_Recording_20260407_062149_Chrome_2_hqdlxx.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">Motion Graphics · 2024</div>
+        <div class="proj-title">2D Visual — Creative Campaign</div>
+        <div class="proj-year">Digital campaign · Motion design</div>
+      </div>
+    </div>
+
+    <!-- CARD 4 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h4" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">004</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542239/Screen_Recording_20260407_061914_Chrome_sqx2tc.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Animation · 2023</div>
+        <div class="proj-title">Motion Loop — Animated Sequence</div>
+        <div class="proj-year">2D motion · Frame by frame</div>
+      </div>
+    </div>
+
+    <!-- CARD 5 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h5" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">005</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542266/Screen_Recording_20260407_062149_Chrome_2_hqdlxx.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Motion · 2023</div>
+        <div class="proj-title">Motion Graphics — Visual Storytelling</div>
+        <div class="proj-year">2D animation · Character & type</div>
+      </div>
+    </div>
+
+    <!-- CARD 6 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h6" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">006</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542193/Screen_Recording_20260407_062445_Chrome_qqh1xs.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Motion · 2024</div>
+        <div class="proj-title">Animated Sequence — 2D Craft</div>
+        <div class="proj-year">2D animation · After Effects</div>
+      </div>
+    </div>
+
+    <!-- CARD 7 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h7" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">007</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542239/Screen_Recording_20260407_061914_Chrome_sqx2tc.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Animation · 2022</div>
+        <div class="proj-title">Motion Identity — Brand Film</div>
+        <div class="proj-year">2D motion · Broadcast quality</div>
+      </div>
+    </div>
+
+    <!-- CARD 8 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h8" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">008</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542221/Screen_Recording_20260407_061544_Chrome_of6zq4.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Motion · 2024</div>
+        <div class="proj-title">Dynamic 2D — Kinetic Typography</div>
+        <div class="proj-year">2D animation · After Effects</div>
+      </div>
+    </div>
+
+    <!-- CARD 9 ──────────────── -->
+    <div class="masonry-item">
+      <div class="proj-thumb h9" style="padding:0;overflow:hidden;">
+        <span class="thumb-num">009</span>
+        <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775542225/Screen_Recording_20260319_232318_Chrome_xjgoub.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="proj-info">
+        <div class="proj-tag">2D Animation · 2023</div>
+        <div class="proj-title">Motion Piece — 2D Storytelling</div>
+        <div class="proj-year">2D animation · After Effects</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────── SHOWREEL SECT -->
+<div id="showreel" style="max-width:100%;margin:0;padding:6rem 4rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);position:relative;overflow:hidden;text-align:center;">
+  <div class="showreel-bg"></div>
+  <div style="position:relative;z-index:1;">
+    <p class="showreel-label">2003 — 2024</p>
+    <h2 class="showreel-title" style="font-family:var(--font-disp);font-size:clamp(3rem,6vw,5.5rem);line-height:.95;color:var(--white);margin-bottom:2.5rem;">
+      21 Years.<br>One Reel.
+    </h2>
+
+    <!-- ══════════════════════════════════════════════════
+         SHOWREEL VIDEO — REPLACE INNER DIV WITH:
+         Option A (local file):
+           <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775541739/Screen_Recording_20260319_234308_Chrome_1_ktwydb.mp4" controls poster="poster.jpg" style="width:100%;height:100%;object-fit:cover;"></video>
+
+         Option B (Vimeo embed):
+           <iframe src="https://player.vimeo.com/video/YOUR_ID?autoplay=0&title=0&byline=0" 
+                   frameborder="0" allow="fullscreen" style="width:100%;height:100%"></iframe>
+
+         Option C (YouTube embed):
+           <iframe src="https://www.youtube.com/embed/YOUR_ID" 
+                   frameborder="0" allow="fullscreen" style="width:100%;height:100%"></iframe>
+    ══════════════════════════════════════════════════ -->
+    <div class="video-frame" style="background:#000;">
+      <video src="https://res.cloudinary.com/dke28egbk/video/upload/v1775541907/Screen_Recording_20260319_234308_Chrome_1_oeeip2.mp4" controls autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+    </div>
+
+    <a href="#contact" class="btn-primary" style="display:inline-block;text-decoration:none;">Commission a Project</a>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────── TIMELINE -->
+<section id="timeline">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Two Decades of<br>Industry-Leading Work</h2>
+
+  <div class="timeline-wrap">
+
+    <!-- LEFT COL -->
+    <div>
+      <div class="tl-entry tl-left">
+        <div class="tl-year">2024</div>
+        <div class="tl-role">Senior Creative Lead</div>
+        <div class="tl-company">Freelance · Global Clients</div>
+        <p class="tl-desc">Leading motion strategy for international brands across broadcast, digital, and experiential formats.</p>
+      </div>
+
+      <div class="tl-entry tl-left" style="margin-top:6rem;">
+        <div class="tl-year">2016</div>
+        <div class="tl-role">Motion Design Director</div>
+        <div class="tl-company">Regional Broadcasting Co.</div>
+        <p class="tl-desc">Oversaw a team of 8 designers delivering 200+ broadcast assets annually across Arabic and English channels.</p>
+      </div>
+
+      <div class="tl-entry tl-left" style="margin-top:6rem;">
+        <div class="tl-year">2009</div>
+        <div class="tl-role">Senior Motion Designer</div>
+        <div class="tl-company">Creative Agency MENA</div>
+        <p class="tl-desc">Produced TVC and campaign motion graphics for top-tier advertising clients across the Gulf region.</p>
+      </div>
+
+      <div class="tl-entry tl-left" style="margin-top:6rem;">
+        <div class="tl-year">2003</div>
+        <div class="tl-role">Motion Designer</div>
+        <div class="tl-company">First Studio Role</div>
+        <p class="tl-desc">Began a career built on obsessive craft, mastering the principles that still define every frame today.</p>
+      </div>
+    </div>
+
+    <!-- CENTER LINE -->
+    <div class="timeline-line">
+      <div class="tl-spine"></div>
+      <div class="tl-dot" style="margin-top:4rem;"></div>
+      <div style="flex:1;"></div>
+      <div class="tl-dot"></div>
+      <div style="flex:1;"></div>
+      <div class="tl-dot"></div>
+      <div style="flex:1;"></div>
+      <div class="tl-dot"></div>
+      <div style="flex:1;"></div>
+    </div>
+
+    <!-- RIGHT COL -->
+    <div>
+      <div class="tl-entry tl-right" style="margin-top:4rem;padding-top:4.5rem;">
+        <div class="tl-role">Key Achievement</div>
+        <div class="tl-company" style="color:var(--muted);">Award · Campaign</div>
+        <p class="tl-desc">Directed the motion identity for a flagship regional campaign that earned recognition at major industry festivals.</p>
+      </div>
+
+      <div class="tl-entry tl-right" style="margin-top:6rem;">
+        <div class="tl-role">Key Achievement</div>
+        <div class="tl-company" style="color:var(--muted);">Leadership · Scale</div>
+        <p class="tl-desc">Built and mentored a top-performing in-house motion team; introduced systematic asset pipelines cutting delivery time by 40%.</p>
+      </div>
+
+      <div class="tl-entry tl-right" style="margin-top:6rem;">
+        <div class="tl-role">Key Achievement</div>
+        <div class="tl-company" style="color:var(--muted);">Craft · Production</div>
+        <p class="tl-desc">Delivered motion packages for 50+ brands with zero missed deadlines across a 6-year agency tenure.</p>
+      </div>
+
+      <div class="tl-entry tl-right" style="margin-top:6rem;">
+        <div class="tl-role">The Foundation</div>
+        <div class="tl-company" style="color:var(--muted);">Origin · Craft</div>
+        <p class="tl-desc">Every principle in use today was forged in these early years — typography, timing, and the relentless pursuit of the perfect frame.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────── ABOUT -->
+<div id="about" style="padding:8rem 6rem;max-width:100%;margin:0;border-top:1px solid var(--border);background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;">
+  <div>
+    <img src="IMG-20260320-WA0007.jpg" alt="Hany Kamal — Senior 2D Motion Designer" style="width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;border:1px solid rgba(255,255,255,0.08);display:block;">
+  </div>
+  <div>
+    <div class="section-label">About</div>
+    <h2 class="about-quote">Motion is not a <em>skill</em>.<br>It's a language.</h2>
+    <p class="about-bio">
+      With 21 years shaping how brands move, speak, and feel in motion — from broadcast graphics to social campaigns, from documentary titles to immersive event visuals — the work has always been driven by one principle: every frame is a choice. No accident, no default.
+      <br><br>
+      Based in the MENA region. Working globally. Fluent in After Effects, Illustrator, and the emerging language of AI-assisted design.
+    </p>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">21<span>+</span></div>
+        <div class="stat-label">Years Active</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">300<span>+</span></div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40<span>+</span></div>
+        <div class="stat-label">Brands</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────── CONTACT -->
+<div id="contact" style="padding:8rem 4rem;text-align:center;border-top:1px solid var(--border);max-width:100%;margin:0;">
+  <div class="section-label" style="justify-content:center;">Contact</div>
+  <h2 class="contact-title">Let's Make<br>Something Move.</h2>
+  <p class="contact-sub">Open to commissions, collaborations, and long-term creative partnerships.</p>
+  <a href="/cdn-cgi/l/email-protection#bed6dfd0c7d5dfd3dfd28f87898790d1d5fed9d3dfd7d290ddd1d3" class="contact-email"><span class="__cf_email__" data-cfemail="ea828b8493818b878b86dbd3ddd3c48581aa8d878b8386c4898587">[email&#160;protected]</span></a>
+  <div style="margin-top:3rem;display:flex;gap:1.5rem;justify-content:center;">
+    <a href="#" class="btn-ghost">Behance</a>
+    <a href="#" class="btn-ghost">Vimeo</a>
+    <a href="#" class="btn-ghost">LinkedIn</a>
+    <a href="#" class="btn-ghost">Instagram</a>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────── FOOTER -->
+<footer>
+  <span class="footer-copy">© 2024 Motion Portfolio. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#hero">Back to top ↑</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<!-- ─────────────────────────────────────────── SCRIPTS -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── Custom cursor
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cur.style.left  = e.clientX + 'px';
+    cur.style.top   = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .masonry-item, .tool-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cur.style.width='18px'; cur.style.height='18px';
+      ring.style.width='54px'; ring.style.height='54px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cur.style.width='10px'; cur.style.height='10px';
+      ring.style.width='36px'; ring.style.height='36px';
+    });
+  });
+
+  // ── Nav on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Timeline scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isInt
